@@ -15,7 +15,7 @@ Here you have the contents of `main.py`:
 def hello(*args, tape): # Tape is the memory, interpreter will automatically insert it here. Args are also automatically given by the interpreter.
     print("Hello, World!")
 pearcom = {
-    "hello": hello
+    "hello": hello # pearcom is used to define the commands
 }
 ```
 In a Pear script, you would use
