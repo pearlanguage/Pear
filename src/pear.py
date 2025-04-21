@@ -12,11 +12,42 @@ def run(lines):
 
     while pc < len(lines):
         line = lines[pc].strip()
+        
+        # Skip empty lines
         if not line:
             pc += 1
             continue
 
-        tokens = line.split()
+        tokens = []
+        current_token = ''
+        in_string = False  # To track if we are inside a string literal
+        for char in line:
+            if char == '"' and not in_string:
+                in_string = True
+                if current_token:
+                    tokens.append(current_token)
+                    current_token = ''
+            elif char == '"' and in_string:
+                in_string = False
+                # Remove quotes from string literals
+                tokens.append(current_token)
+                current_token = ''
+            elif char == ' ' and not in_string:
+                if current_token:
+                    tokens.append(current_token)
+                    current_token = ''
+            else:
+                current_token += char
+
+        if current_token:  # Append any remaining token after the loop
+            tokens.append(current_token)
+
+        # Ensure there are tokens before proceeding
+        if not tokens:
+            print(f"[pear] Error: Empty command or invalid syntax at line {pc + 1}")
+            pc += 1
+            continue
+        
         cmd = tokens[0]
 
         # Skip logic for if-statements
@@ -50,7 +81,10 @@ def run(lines):
                 spec.loader.exec_module(mod)
 
                 pearcom = getattr(mod, "pearcom", {})
-                loaded_packages[package] = pearcom
+                if len(tokens) != 3:
+                    loaded_packages[package] = pearcom
+                else:
+                    loaded_packages[tokens[2]] = pearcom
             except Exception as e:
                 print(f"[include] Error with loading of '{package}': {e}")
 
@@ -88,6 +122,9 @@ def run(lines):
                 pearcom = loaded_packages[cmd]
 
                 if subcmd in pearcom:
+                    # If it's a string literal command, pass it without quotes
+                    if args and args[0].startswith('"') and args[0].endswith('"'):
+                        args[0] = args[0][1:-1]  # Remove the surrounding quotes
                     tape = pearcom[subcmd](*args, tape=tape)
                 else:
                     print(f"[{cmd}] Unknown subcommand '{subcmd}'")
