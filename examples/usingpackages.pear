@@ -1,27 +1,5 @@
-insert 72 0
-insert 101 1
-insert 108 2
-insert 108 3
-insert 111 4
-insert 32 5
-insert 87 6
-insert 111 7
-insert 114 8
-insert 108 9
-insert 100 10
-insert 33 11
-
 include io
+include string
 
-io printc 0
-io printc 1
-io printc 2
-io printc 3
-io printc 4
-io printc 5
-io printc 6
-io printc 7
-io printc 8
-io printc 9
-io printc 10
-io printc 11
+string set "Hello, world!" 0
+io println 0
