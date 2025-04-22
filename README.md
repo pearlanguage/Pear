@@ -1,5 +1,6 @@
 # Pear
 The Pear programming language, coded in python.
+Feedback is very welcome!
 
 ## Examples
 For examples, navigate to the examples directory. If something like 'io' is found, it should be a module that is included automatically with a release.
