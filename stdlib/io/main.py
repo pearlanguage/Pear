@@ -25,9 +25,26 @@ def println(*args, tape: list) -> list:
     print(tape[int(args[0])])
     return tape
 
+def In(*args, tape: list) -> list:
+    intype = args[0]
+    reg = int(args[1])
+    prompt = args[2] if len(args) == 3 else None
+    
+    if intype == "int":
+        tape[reg] = int(input("" if prompt == None else prompt))
+    elif intype == "float":
+        tape[reg] = float(input("" if prompt == None else prompt))
+    elif intype == "str":
+        tape[reg] = input("" if prompt == None else prompt)
+    else:
+        print(f"Invalid type: {intype}")
+        
+    return tape
+
 pearcom = {
     "print": output,
     "printc": outputc,
     "printable": printable,
-    "println": println
+    "println": println,
+    "in": In
 }
